@@ -17,8 +17,8 @@ except (ImportError, ModuleNotFoundError):
     install_dependencies()
     from pyrogram import Client
 
-API_ID = 1234567  
-API_HASH = "abcdef1234567890"
+API_ID = 23688933  
+API_HASH = "fb36db8f0482a909a320752f7d72abc6"
 
 async def main():
     app = Client(
