@@ -106,11 +106,11 @@ async def gen_thumb(
     draw = ImageDraw.Draw(bg)
 
     def load_font(size):
-        paths = ["arialbd.ttf", "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", "C:/Windows/Fonts/arialbd.ttf"]
-        for p in paths:
-            try: return ImageFont.truetype(p, size)
-            except: continue
-        return ImageFont.load_default()
+        try:
+            return ImageFont.truetype("Title.ttf", size)
+        except Exception:
+            logger.warning("Font Title.ttf tidak ditemukan, menggunakan font default.")
+            return ImageFont.load_default()
 
     font_title = load_font(75)
     font_sub = load_font(35)
