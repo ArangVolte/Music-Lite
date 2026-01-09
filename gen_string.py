@@ -25,7 +25,10 @@ async def main():
         name="session_gen",
         api_id=API_ID,
         api_hash=API_HASH,
-        in_memory=True
+        in_memory=True,
+        device_model="Laptop (Windows 11)",
+        system_version="Desktop/PC",
+        app_version="Pyrogram mod"
     )
     
     app.is_bot = False 
@@ -33,7 +36,14 @@ async def main():
     try:
         await app.start()
         string_session = await app.export_session_string()
-        await app.send_message("me", f"**STRING SESSION:**\n\n`{string_session}`")
+        
+        text = (
+            "**BERHASIL MEMBUAT STRING SESSION**\n\n"
+            "**Device:** `Laptop (Windows 11)`\n"
+            f"**String:**\n`{string_session}`"
+        )
+        
+        await app.send_message("me", text)
         print("\n✅ Berhasil! Cek Saved Messages.")
     except Exception as e:
         print(f"\n❌ Error: {e}")
