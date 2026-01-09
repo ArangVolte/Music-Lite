@@ -31,7 +31,6 @@ async def main():
             api_hash=API_HASH,
             in_memory=True
         ) as app:
-            app.is_bot=False
             string_session = await app.export_session_string()
             await app.send_message("me", f"**String Session Berhasil Dibuat:**\n\n`{string_session}`")
             print("\n✅ Selesai! Cek Pesan Tersimpan di Telegram kamu.")
