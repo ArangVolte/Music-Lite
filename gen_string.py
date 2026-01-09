@@ -12,7 +12,7 @@ app = Client(
     system_version="Android 14",
     app_version="10.11.1"
 )
-
+app.is_bot=False
 async def main():
     await app.start()
     ss = await app.export_session_string()
