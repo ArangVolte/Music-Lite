@@ -8,7 +8,7 @@ def install_dependencies():
         "git+https://github.com/ArangVolte/mod"
     ]
     for lib in dependencies:
-        subprocess.check_call([sys.executable, "-m", "pip3", "install", lib])
+        subprocess.check_call([sys.executable, "-m", "pip", "install", lib])
 
 try:
     from pyrogram import Client
