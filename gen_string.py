@@ -5,14 +5,13 @@ API_ID = int(input("\nEnter Your API_ID:\n > "))
 API_HASH = input("\nEnter Your API_HASH:\n > ")
 
 app = Client(
-    ":memory:", 
+    "session_android", 
     api_id=API_ID, 
     api_hash=API_HASH,
-    device_model="Laptop (Windows 11)",
-    system_version="Desktop/PC",
-    app_version="Pyrogram mod"
+    device_model="Samsung Galaxy S24 Ultra",
+    system_version="Android 14",
+    app_version="10.11.1"
 )
-app.is_bot = False
 
 async def main():
     await app.start()
@@ -20,11 +19,12 @@ async def main():
     
     text = (
         "**BERHASIL MEMBUAT STRING SESSION**\n\n"
-        "**Device:** `Laptop (Windows 11)`\n"
+        "**Device:** `Android (Samsung S24)`\n"
         f"**String:**\n`{ss}`"
     )
     
     await app.send_message("me", text)
     print(f"\nBERHASIL!\n\n{ss}\n")
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
