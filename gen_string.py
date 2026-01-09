@@ -1,8 +1,8 @@
 import asyncio
 from pyrogram import Client
 
-API_ID = 23688933
-API_HASH = " fb36db8f0482a909a320752f7d72abc6"
+API_ID = int(input("\nEnter Your API_ID:\n > "))
+API_HASH = input("\nEnter Your API_HASH:\n > ")
 
 app = Client(
     ":memory:", 
