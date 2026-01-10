@@ -4,7 +4,8 @@ import logging
 from typing import Dict, List, Optional
 from datetime import datetime
 from io import BytesIO
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageOps
+from unidecode import unidecode
 import textwrap
 import aiohttp
 from pyrogram import Client, filters, idle
@@ -83,6 +84,7 @@ async def gen_thumb(
     thumbnail_url: str,
     **kwargs
 ) -> BytesIO:
+    requester = unidecode(requester)
     width, height = 1280, 720
     
     background_raw = None
@@ -98,7 +100,7 @@ async def gen_thumb(
         background_raw = Image.new('RGB', (width, height), color=(30, 30, 30))
 
     bg = background_raw.resize((width, height), Image.LANCZOS)
-    bg = bg.filter(ImageFilter.GaussianBlur(radius=40))
+    bg = bg.filter(ImageFilter.GaussianBlur(radius=10))
     
     overlay = Image.new('RGBA', (width, height), (0, 0, 0, 160))
     bg = bg.convert('RGBA')
@@ -107,9 +109,8 @@ async def gen_thumb(
 
     def load_font(size):
         try:
-            return ImageFont.truetype("Title.ttf", size)
+            return ImageFont.truetype("arial.ttf", size)
         except Exception:
-            logger.warning("Font Title.ttf tidak ditemukan, menggunakan font default.")
             return ImageFont.load_default()
 
     font_title = load_font(75)
@@ -117,20 +118,18 @@ async def gen_thumb(
     font_time = load_font(30)
 
     art_size = 400
-    album_art = background_raw.resize((art_size, art_size), Image.LANCZOS)
+    album_art = ImageOps.fit(background_raw, (art_size, art_size), centering=(0.5, 0.5))
     
-    mask = Image.new('L', (art_size * 4, art_size * 4), 0)
+    mask = Image.new('L', (art_size, art_size), 0)
     mask_draw = ImageDraw.Draw(mask)
-    mask_draw.ellipse((0, 0, art_size * 4, art_size * 4), fill=255)
-    mask = mask.resize((art_size, art_size), Image.LANCZOS)
+    mask_draw.ellipse((0, 0, art_size, art_size), fill=255)
     
     art_x, art_y = 100, (height - art_size) // 2
     
-    draw.ellipse((art_x-15, art_y-15, art_x+art_size+15, art_y+art_size+15), outline="white", width=15)
     bg.paste(album_art, (art_x, art_y), mask)
+    draw.ellipse((art_x, art_y, art_x + art_size, art_y + art_size), outline="white", width=10)
 
     text_x = art_x + art_size + 70
-    max_text_width = width - text_x - 50
     current_y = 180 
     
     lines = textwrap.wrap(title, width=18)
@@ -163,7 +162,6 @@ async def gen_thumb(
     bg.convert('RGB').save(img_byte_arr, format='JPEG', quality=95)
     img_byte_arr.seek(0)
     return img_byte_arr
-
 
 async def create_invite_link(chat_id: int) -> Optional[str]:
     try:
