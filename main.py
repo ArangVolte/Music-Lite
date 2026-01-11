@@ -109,7 +109,7 @@ async def gen_thumb(
 
     def load_font(size):
         try:
-            return ImageFont.truetype("arial.ttf", size)
+            return ImageFont.truetype("Title.ttf", size)
         except Exception:
             return ImageFont.load_default()
 
